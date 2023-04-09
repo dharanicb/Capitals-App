@@ -31,49 +31,44 @@ const countryAndCapitalsList = [
 ]
 
 class Capitals extends Component {
-  state = {selectCapital: 0}
+  state = {selectCapital: countryAndCapitalsList[0].id}
 
-  renderCapitals = () => {
-    const {onChangeList} = this.props
-
-    return countryAndCapitalsList.map(eachItem => {
-      const {id, capitalDisplayText} = eachItem
-
-      const onClickCapitalsList = () => {
-        onChangeList(id)
-      }
-
-      return (
-        <option
-          key={id}
-          className="option-list"
-          value={id}
-          onChange={onClickCapitalsList}
-        >
-          {capitalDisplayText}
-        </option>
-      )
-    })
+  onChangeList = event => {
+    this.setState({selectCapital: event.target.value})
   }
 
-  onChangeList = id => {
-    this.setState({selectCapital: id})
+  getCountry = () => {
+    const {selectCapital} = this.state
+
+    const activeCountryAndCapital = countryAndCapitalsList.filter(
+      eachCapital => eachCapital.id === selectCapital,
+    )
+
+    return activeCountryAndCapital.country
   }
 
   render() {
     const {selectCapital} = this.state
-    const countryList = countryAndCapitalsList[selectCapital].country
+    const country = this.getCountry(selectCapital)
 
     return (
       <div className="container">
         <div className="card-container">
           <h1 className="heading">Countries And Capitals</h1>
           <div>
-            <select name="countries" id="country">
-              {this.renderCapitals()}
+            <select name="countries" id="country" onChange={this.onChangeList}>
+              {countryAndCapitalsList.map(eachCapital => (
+                <option
+                  key={eachCapital.id}
+                  value={eachCapital.id}
+                  className="option"
+                >
+                  {eachCapital.capitalDisplayText}
+                </option>
+              ))}
             </select>
             <label htmlFor="country">is capital of which country</label>
-            <p>{countryList}</p>
+            <p>{country}</p>
           </div>
         </div>
       </div>
