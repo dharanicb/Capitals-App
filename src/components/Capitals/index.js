@@ -44,7 +44,7 @@ class Capitals extends Component {
       eachCapital => eachCapital.id === selectCapital,
     )
 
-    return activeCountryAndCapital.country
+    return activeCountryAndCapital[0].country
   }
 
   render() {
